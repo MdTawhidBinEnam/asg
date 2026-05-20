@@ -1,0 +1,95 @@
+SQL_QUERIES = {
+    "menu_food_item_data_fetch" : """
+        SELECT food_item_id, name, price FROM Food_Item
+    """,
+
+    "add_customer_order" : """
+        INSERT INTO Customer_Order (order_id, customer_id, type, bill_id)
+        VALUES (?, ?, 1, ?)
+    """,
+
+    "update_food_item_order" : """
+        UPDATE Food_Item SET order_id = ? WHERE food_item_id = ?
+    """,
+
+    "get_foods_using_order_id" : """
+        SELECT food_item_id, name, price FROM Food_Item WHERE order_id = ?
+    """,
+
+    "get_total_customer_order_count" : """
+        SELECT count(*) FROM Customer_Order
+    """,
+
+    "create_new_bill" : """
+        INSERT INTO Bill (bill_id, amount, payment_status, payment_method, payment_date, order_id)
+        VALUES (?, ?, 1, 'card', ?, ?)
+    """,
+
+    "add_new_food_item" : """
+        INSERT INTO Food_Item (food_item_id, name, price, prep_time, employee_id)
+        VALUES (?, ?, ?, ?, 1)
+    """,
+
+    "get_all_employee_names" : """
+        SELECT name, email FROM Employee
+    """,
+
+    "get_total_revenue" : """
+        SELECT SUM(amount) FROM Bill
+    """,
+
+    "get_last_week_revenue" : """
+        WITH DailySummary AS (
+        SELECT
+            payment_date,
+            SUM(amount) as daily_total
+        FROM Bill
+        WHERE payment_date >= DATE('now', '-7 days')
+        GROUP BY payment_date
+        )
+        SELECT
+            SUM(daily_total) as total_last_7_days
+        FROM DailySummary
+    """,
+
+    "get_last_ten_days_revenue"  : """
+        WITH DailySummary AS (
+        SELECT
+            payment_date,
+            SUM(amount) as daily_total
+        FROM Bill
+        WHERE payment_date >= DATE('now', '-10 days')
+        GROUP BY payment_date
+        )
+        SELECT
+            SUM(daily_total) as total_last_10_days
+        FROM DailySummary
+    """,
+
+    "get_all_employee_emails" : """
+        SELECT email FROM Employee
+    """,
+
+    "create_employee" : """
+        INSERT INTO Employee (employee_id, name, role, email, date_of_birth)
+        VALUES (?, ?, ?, ?, ?)
+    """,
+
+    "get_all_employee" : """
+        SELECT name, email, employee_id FROM Employee
+    """,
+
+    "remove_employee" : """
+        DELETE FROM Employee WHERE employee_id = ?
+    """,
+
+    "get_certain_employee_email" : """
+        SELECT email FROM Employee WHERE employee_id = ?
+    """,
+
+    "update_employee_email" : """
+        UPDATE Employee
+        SET email = ?
+        WHERE employee_id = ?
+    """
+}
